@@ -47,7 +47,7 @@ __m256 __mm_div(__m256 m1, __m256 m2)
 	{
 		vmovupd ymm0, m1
 		vmovupd ymm1, m2
-		vhypot ymm0, ymm1 //деление
+		//vhypot ymm0, ymm1 //деление
 		vmovupd result, ymm0
 	}
 	return result;
@@ -223,7 +223,12 @@ int main() {
 	{
 		std::cout << (int)im256_3[i] << " ";
 	}
+
 	__asm vzeroall; 
+	
+	__m256 avx_register = _mm256_set_ps(8.0, 7.0, 6.0, 5.0, 4.0, 3.0, 2.0, 1.0); // инициализируем регистр
+	__m256 avx_multiplied = _mm256_mul_ps(avx_register, _mm256_set1_ps(2.0)); // умножаем каждый элемент на 2
+	__m256i avx_ints = _mm256_cvttps_epi32(avx_multiplied); // преобразовываем результаты в int
 
 	std::cout << "\n";
 
