@@ -32,6 +32,14 @@ __m128 _mm_sub(__m128 m1, __m128 m2)
 	return result;
 }
 
+__declspec(noinline)
+void func() {
+	void* pvAddressOfReturnAddress = _AddressOfReturnAddress();
+	printf_s("%p\n", pvAddressOfReturnAddress);
+	printf_s("%p\n", *((void**)pvAddressOfReturnAddress));
+	printf_s("%p\n", _ReturnAddress());
+}
+
 __m256 __mm_div(__m256 m1, __m256 m2)
 {
 	__m256 result;
@@ -39,7 +47,7 @@ __m256 __mm_div(__m256 m1, __m256 m2)
 	{
 		vmovupd ymm0, m1
 		vmovupd ymm1, m2
-		vdivpd ymm0, ymm0, ymm1 //деление
+		vhypot ymm0, ymm1 //деление
 		vmovupd result, ymm0
 	}
 	return result;
@@ -156,12 +164,11 @@ int main() {
 		cout << (int)arr_mmx_1[i] + 0 << " ";
 	cout << endl;
 
-	double arr1_128[4] = { 1, 2, 3, 4 };
-	double arr2_128[4] = { 11, 4, 6, 7 };
+	double arr1_128[4] = { 2, 2, 3, 4 };
+	double arr2_128[4] = { 1, 1, 2, 2 };
 
 	__m128 m128_1, m128_2;
 	__asm {
-		emms
 		movups xmm0, arr1_128
 		movups m128_1, xmm0
 		movups xmm0, arr2_128
@@ -174,8 +181,8 @@ int main() {
 	}
 
 	cout << "Subtraction 128-bit: ";
-	for (int i; i < 4; ++i)
-		cout << arr1_128[i] << " ";
+	for (size_t i = 0; i < 4; ++i)
+		cout << (int)arr1_128[i] << " ";
 	cout << endl;
 
 	double mas_ymm1[4] = { 12,20,34,134 };
@@ -217,7 +224,10 @@ int main() {
 		std::cout << (int)im256_3[i] << " ";
 	}
 	__asm vzeroall; 
+
 	std::cout << "\n";
+
+	func();
 
 	return 0;
 }
