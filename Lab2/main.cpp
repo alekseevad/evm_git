@@ -226,9 +226,9 @@ int main() {
 
 	__asm vzeroall; 
 	
-	__m256 avx_register = _mm256_set_ps(8.0, 7.0, 6.0, 5.0, 4.0, 3.0, 2.0, 1.0); // инициализируем регистр
-	__m256 avx_multiplied = _mm256_mul_ps(avx_register, _mm256_set1_ps(2.0)); // умножаем каждый элемент на 2
-	__m256i avx_ints = _mm256_cvttps_epi32(avx_multiplied); // преобразовываем результаты в int
+	__m256 avx_register = _mm256_set_ps(8.0, 7.0, 6.0, 5.0, 4.0, 3.0, 2.0, 1.0);
+	__m256 avx_multiplied = _mm256_mul_ps(avx_register, _mm256_set1_ps(2.0));
+	__m256i avx_ints = _mm256_cvttps_epi32(avx_multiplied); // Converts packed float32 values to truncated extended 32-bit integer values
 
 	std::cout << "\n";
 
